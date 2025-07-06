@@ -27,13 +27,13 @@ class AudioLDM2Controller:
         self,
         prompt: str,
         num_inference_steps: int = 200,
-        audio_length_in_s: float = 10.0,
+        length_s: float = 10.0,
     ) -> numpy.ndarray:
         """
         Generate audio based on the provided text prompt.
 
         Args:
-            prompt (str): The text prompt to guide the audio generation.
+            prompt_embedding (tuple): The embedding of the text prompt.
             num_inference_steps (int): The number of inference steps for the generation.
             audio_length_in_s (float): The desired length of the generated audio in seconds.
 
@@ -41,9 +41,9 @@ class AudioLDM2Controller:
             numpy.ndarray: The generated audio data.
         """
         audio = self.model(
-            prompt,
+            prompt=prompt,
             num_inference_steps=num_inference_steps,
-            audio_length_in_s=audio_length_in_s,
+            audio_length_in_s=length_s,
         ).audios[0]
         return audio
 
@@ -52,21 +52,7 @@ class AudioLDM2Controller:
         Save the generated audio to a file.
 
         Args:
-            audio (torch.Tensor): The generated audio data.
+            audio (numpy.ndarray): The generated audio data.
             filename (str): The name of the file to save the audio to.
         """
         scipy.io.wavfile.write(filename, rate=16000, data=audio)
-
-
-# text prompt
-prompt = "Techno music with a strong, upbeat tempo and high melodic riffs."
-audiofile_name = "techno.wav"
-
-# Create an instance of the AudioLDM2Controller
-audioldm2_controller = AudioLDM2Controller()
-
-# Generate audio based on the prompt
-audio = audioldm2_controller.generate_audio(prompt)
-
-# Save the generated audio to a file
-audioldm2_controller.save_audio(audio, audiofile_name)

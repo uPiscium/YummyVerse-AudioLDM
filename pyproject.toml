@@ -11,6 +11,8 @@ dependencies = [
     "transformers[torch]==4.42.0",
     "diffusers[torch]>=0.34.0",
     "audioldm2",
+    "pydantic>=2.11.7",
+    "uvicorn>=0.35.0",
 ]
 
 [tool.uv.sources]
